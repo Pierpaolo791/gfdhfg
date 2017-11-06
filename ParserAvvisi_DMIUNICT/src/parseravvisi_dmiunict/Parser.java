@@ -81,4 +81,5 @@ public class Parser {
     public ArrayList getAvvisi() {
         return avvisi;
     }
+    
 }

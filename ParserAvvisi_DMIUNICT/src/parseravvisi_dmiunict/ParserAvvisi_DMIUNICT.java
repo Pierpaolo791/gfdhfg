@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
+import javax.json.*;
 public class ParserAvvisi_DMIUNICT {
     static String pathData = "..\\..\\data"; // config 
     static String[] linkArchivio = { // Link archivi avvisi dei CdL
@@ -26,10 +26,10 @@ public class ParserAvvisi_DMIUNICT {
         Document doc[] = new Document[4]; // 0, html tr. inf || 1, html  tr. mat || 2, html mag. inf || 3, html mag. matematica
         Parser parser;
         File file;
-        String inLink = "20"; 
+        String inLink = "201710"; 
 
         while (true) {
-           
+           /*
             // Gestione calendario + estrapolazione link
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"),Locale.ITALY);
             Date today = calendar.getTime();
@@ -38,7 +38,7 @@ public class ParserAvvisi_DMIUNICT {
             String mese = data.substring(3,5); // mm
             String anno = data.substring(6,8); // gg
             inLink = "20"+anno+mese; // 20 + mm + gg 
-           
+           */
            
             // Gestione file
             if (true); // Entro il 5 Novembre
@@ -58,15 +58,27 @@ public class ParserAvvisi_DMIUNICT {
             // Parsing + Estrapolazione link
             parser = new Parser();
             for (int i=0; i<doc.length; i++) {
-                //ArrayList<String> link = parser.generaLink(doc[i].toString());
-                //System.out.println(link.toString());
                 parser.generaLink(i,doc[i].toString());
             }
-            System.out.println("___________"+data+"__________");
+            JsonReader jsonReader; // Json che leggo dal file
+            ArrayList<JsonObject> jsonWriter = new ArrayList(); // Json che scrivo ogni 5 secondi
+            //System.out.println("___________"+data+"__________");
             for (int i=0; i<parser.getAvvisi().size(); i++) {
-                    System.out.println(parser.getAvvisi().get(i));
+                    Avviso x = (Avviso) parser.getAvvisi().get(i); // Casting da Object ad Avvisi -- Vediamo che succede
+                    String nomeCdl = x.getNomeCdL();
+                    String link = x.getLink().toString();
+                    if(true); // Se è stato già scritto 
+                    jsonWriter.add(
+                            Json.createObjectBuilder()
+                            .add("Nome CdL",nomeCdl)
+                            .add("Link",link)
+                            .build()
+                    );
+                    jsonReader.
+                    
+                    
             }
-            System.out.println("_________GENERATO________\n\n\n");
+            //System.out.println("_________GENERATO________\n\n\n");
             
             try {
                 Thread.sleep(5000);
